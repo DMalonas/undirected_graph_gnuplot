@@ -28,6 +28,9 @@ struct cartesianPoint {
     float y;
 };
 
+/**
+ * Method declarations
+ */
 void createAdjacencyMatrix();
 int isConnected();
 void breadthFirstSearch(int);
@@ -45,9 +48,11 @@ void plotGraph();
 int getNumOfLines(FILE *fp);
 struct node* createNode(int label);
 void layoutGraph(int numOfNodes, struct cartesianPoint *coordinatesList, int max, int min);
-
 void printAdjacencyLists(struct Graph *graph);
 
+/**
+ * Global variables
+ */
 int adjacencyMatrix[MAX_NUM_OF_NODES][MAX_NUM_OF_NODES];
 static int currentNumberOfNodes;
 int state[MAX_NUM_OF_NODES]; //[INITIAL, WAITING, VISITED]
@@ -57,14 +62,18 @@ FILE *fptr;
 int main() {
     int connected = 0, wantsToExit = 0;
     char choice;
+    //Create the graph E(G) and V(G) by asking user input, only escape while loop if the resulting graph is connected
     while (connected == 0) {
         createAdjacencyMatrix();
         connected = isConnected();
     }
+
     // Calculate and Print AdjLists
     struct Graph *graph = calculateAdjacencyLists();
     printAdjacencyLists(graph);
-    // Extract to dat file and print graph.
+    // Extract to E(G) and V(G) information to edges.dat and vertices.dat file, correspondingly
+    // These files will be used to extract information for the final graph.dat file
+    // which gnuplot uses to plot the graph.
     extractNodesAndEdgesInfoToDatFile();
 
     // User menu
@@ -76,7 +85,7 @@ int main() {
         printf("Print graph - Press P\n");
         printf("Exit - Press any other key\n");
         printf("Your option: ");
-        getchar();
+        getchar(); //Consume newline character
         struct Graph *graph;
         scanf("%c", &choice);
         if (choice == 'S' || choice == 's') {
@@ -161,14 +170,14 @@ void plotGraph() {
     if (coordinates_list == NULL) { exit(1);};
     int allocations_cnt = 0; //counts how many coordinates have been allocated
     int max = 11, min = 1;
-//    Use layoutGraph function instead
+//    Use layoutGraph function instead to assign coordinates
 //    for(int ci = 0; ci < numOfNodes; ci++) {
 //        coordinates_list[ci].x = ((max - min) * ((float)rand() / (float)RAND_MAX)) + min; //(rand() % 230 + 1); //between 1 and 11
 //        coordinates_list[ci].y = ((250 - min) * ((float)rand() / (float)RAND_MAX)) + min;
 //    }
-    layoutGraph(numOfNodes, coordinates_list, max, min);
+    layoutGraph(numOfNodes, coordinates_list, max, min); //Assign coordinates
 
-    fprintf(formattedDataFile, "\n\n");
+    fprintf(formattedDataFile, "\n\n"); //Gnuplot seems to need these two empty lines to plot the graph correctly
     strcpy(lines[0], "# ID  x     y     PointColor  Name\n");
     fprintf(formattedDataFile, lines[0]);
     int cnt = 0;
@@ -571,7 +580,7 @@ void addNode() {
             }
             //If the user provided bad input, decrement i and let them try again
             if(destination >= MAX_NUM_OF_NODES || destination < 0
-                || nodeExists(destination) == 0) {
+               || nodeExists(destination) == 0) {
                 printf("\nInvalid node!\n");
                 i--;
             }
