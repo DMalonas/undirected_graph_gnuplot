@@ -385,7 +385,7 @@ void createAdjacencyMatrix() {
         }
     }
 
-    for(i = 1; i <= maxEdges; i++) {
+    for(i = 0; i < maxEdges; i++) {
         printf("\nEnter edge %d [Quit: -1 -1]: ", i);
         scanf("%d%d", &origin, &destination);
         if ((origin == -1) && (destination == -1)) {
