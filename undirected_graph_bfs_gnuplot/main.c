@@ -9,6 +9,8 @@
 #define ready 1
 #define waiting 2
 #define processed 3
+#define TRUE 1
+#define FALSE 0
 
 
 struct node {
@@ -428,11 +430,11 @@ int isConnected() {
     }
     if(connected) {
         printf("\nGraph is connected\n");
-        return 1;
+        return TRUE;
     }
     else {
         printf("\nGraph is not connected\n");
-        return 0;
+        return FALSE;
     }
 }
 
