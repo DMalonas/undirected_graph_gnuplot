@@ -398,10 +398,9 @@ void createAdjacencyMatrix() {
         else {
             adjacencyMatrix[origin][destination] = 1;
             adjacencyMatrix[destination][origin] = 1;
-        }
-    }
+        } 0 1 0 0   (0, 1)
+    }     1 0 0 0
 }
-
 
 /**
  * 1- Set all nodes to status READY
