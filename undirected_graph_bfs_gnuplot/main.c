@@ -20,7 +20,7 @@ struct node {
 //A stuct to represent the adjacency lists that are lists of struct nodes
 struct Graph {
     int numOfNodes;
-    int* headPointers; // The actual nodeLabel number
+    int* headPointers; // The actual nodeLabel number, e.g. for node 1 it will be 0
     struct node** adjLists;
 };
 
@@ -295,7 +295,11 @@ struct Graph * calculateAdjacencyLists() {
     graph->headPointers = (int *)malloc(currentNumberOfNodes * sizeof(int));
     if (graph->headPointers == NULL) { exit(1);}
 
-    //Create the heads of the lists
+    //Create the heads of the lists. The position that describes the node its self
+    //has been set to 1 in the line that represents it, in the adjacency matrix
+    //So if there is a node 5, adjacencyMatrix[4][4] will be 1
+    //On the other hand, if there is no node 4 then adjacencyMatrix[3][3] will be 0
+    //That way we know what value to assign to each of the headPointers
     int countLists = 0;
     for(int i = 0; i < MAX_NUM_OF_NODES; i++) {
         if (adjacencyMatrix[i][i] == 1) {
@@ -305,9 +309,6 @@ struct Graph * calculateAdjacencyLists() {
         }
     }
     graph->numOfNodes = countLists;
-    for (int i = 0; i < graph->numOfNodes; i++) { //Initialize each list with NULL
-        graph->adjLists[i] = NULL;
-    }
     // Populate Lists by adding nodes in the beggining of the corresponding adjacency list
     for(int i = 0; i < countLists; i++) {
         for(int j = 0; j < MAX_NUM_OF_NODES; j++) {
