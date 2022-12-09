@@ -290,6 +290,8 @@ struct Graph * calculateAdjacencyLists() {
     graph->adjLists = (struct node *) malloc(currentNumberOfNodes * sizeof(struct node *));
     if (graph->adjLists == NULL) { exit(1);}
     //and a list for the nodes pointing to their corresponding adjacent list
+    //because adjacency lists is a graph representation as an array (headPointers) of
+    //linked lists (adjLists)
     graph->headPointers = (int *)malloc(currentNumberOfNodes * sizeof(int));
     if (graph->headPointers == NULL) { exit(1);}
 
