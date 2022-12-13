@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/user/CLionProjects/undirected_graph_bfs_gnuplot/cmake-build-debug",
-		"source" : "C:/Users/user/CLionProjects/undirected_graph_bfs_gnuplot"
+		"build" : "C:/Users/user/Documents/GitHub/undirected_graph_gnuplot/undirected_graph_bfs_gnuplot/cmake-build-debug",
+		"source" : "C:/Users/user/Documents/GitHub/undirected_graph_gnuplot/undirected_graph_bfs_gnuplot"
 	},
 	"version" : 
 	{

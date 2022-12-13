@@ -5,7 +5,7 @@
 #include <math.h>
 
 #define MAX_NUM_OF_NODES 100
-#define MIN_ALLOWED_PROXIMITY 0.5
+#define MIN_ALLOWED_PROXIMITY 5.0
 #define ready 1
 #define waiting 2
 #define processed 3
@@ -51,6 +51,7 @@ int getNumOfLines(FILE *fp);
 struct node* createNode(int label);
 void layoutGraph(int numOfNodes, struct cartesianPoint *coordinatesList, int max, int min);
 void printAdjacencyLists(struct Graph *graph);
+void printAdjacencyMatrix();
 
 /**
  * Global variables
@@ -94,7 +95,9 @@ int main() {
             searchNode();
         }
         else if (choice == 'I' || choice == 'i') {
+//            printAdjacencyMatrix();
             addNode();
+//            printAdjacencyMatrix();
             graph = calculateAdjacencyLists();
             printAdjacencyLists(graph);
             extractNodesAndEdgesInfoToDatFile();
@@ -200,7 +203,7 @@ void plotGraph() {
 
     int numOfEdges = getNumOfLines(edgesFile);
     lines = (char **)(malloc((numOfEdges) * sizeof(char *)));
-    printf("Lines: %d\n", numOfEdges);
+//    printf("Lines: %d\n", numOfEdges);
     for (int i = 0; i < numOfEdges; i++)
     {
         lines[i] = (char *)malloc(sizeof(char *) * 25);
@@ -287,6 +290,7 @@ struct Graph * calculateAdjacencyLists() {
     struct Graph* graph = (struct Graph*)malloc(sizeof(struct Graph));
     if (graph == NULL) {exit(1);}
     //With adjacent lists
+//    printf("%d <- current num of nodes#\n", currentNumberOfNodes);
     graph->adjLists = (struct node *) malloc(currentNumberOfNodes * sizeof(struct node *));
     if (graph->adjLists == NULL) { exit(1);}
     //and a list for the nodes pointing to their corresponding adjacent list
@@ -302,19 +306,21 @@ struct Graph * calculateAdjacencyLists() {
     //That way we know what value to assign to each of the headPointers
     int countLists = 0;
     for(int i = 0; i < MAX_NUM_OF_NODES; i++) {
-        if (adjacencyMatrix[i][i] == 1) {
+        if (adjacencyMatrix[i][i] == 2 || adjacencyMatrix[i][i] == 1) {
             graph->adjLists[countLists] = NULL;
             graph->headPointers[countLists] = i;
             countLists++;
         }
     }
     graph->numOfNodes = countLists;
+//    printf("%d <- graph->numOfNodess#\n", graph->numOfNodes);
+
     // Populate Lists by adding nodes in the beggining of the corresponding adjacency list
     for(int i = 0; i < countLists; i++) {
         for(int j = 0; j < MAX_NUM_OF_NODES; j++) {
             //The second expression in the if statement ensures that the node with label j,
             // wont end up being added as adjacent to its own list
-            if (adjacencyMatrix[graph->headPointers[i]][j] == 1 && graph->headPointers[i] != j) {
+            if (adjacencyMatrix[graph->headPointers[i]][j] == 1 ) {
                 struct node* newNode = createNode(j);
                 newNode->next = graph->adjLists[i];
                 graph->adjLists[i] = newNode;
@@ -340,7 +346,7 @@ void printAdjacencyLists(struct Graph *graph) {
         }
         printf("\n");
     }
-    printf("--- --- --- --- --- --- --- ---\n");
+    printf("------------------------------------\n");
 }
 
 /**
@@ -378,17 +384,19 @@ void createAdjacencyMatrix() {
     int i, j, maxEdges, origin, destination;
     printf("\nEnter number of nodes : ");
     scanf("%d", &currentNumberOfNodes);
-    maxEdges = currentNumberOfNodes * (currentNumberOfNodes - 1) / 2;
+    maxEdges = currentNumberOfNodes * (currentNumberOfNodes - 1) / 2 + currentNumberOfNodes; //+currentNumberOfNodes for edges that are from the node to the node itself
     for(i = 0; i < MAX_NUM_OF_NODES; i++) {
         for(j = 0; j < MAX_NUM_OF_NODES; j++) {
             if (i == j && i < currentNumberOfNodes) {
-                adjacencyMatrix[i][j] = 1;
+                adjacencyMatrix[i][j] = 2;
             }
             else {
                 adjacencyMatrix[i][j] = 0;
             }
         }
     }
+
+//    printf("max - > edges -> %d \n", maxEdges);
 
     for(i = 0; i < maxEdges; i++) {
         printf("\nEnter edge %d [Quit: -1 -1]: ", i);
@@ -532,14 +540,14 @@ void extractNodesAndEdgesInfoToDatFile() {
     int i, j;
     fptr = fopen("vertices.dat", "w");
     for(i = 0; i < MAX_NUM_OF_NODES; i++) {
-        if (adjacencyMatrix[i][i] == 1) {
+        if (adjacencyMatrix[i][i] == 2 || adjacencyMatrix[i][i] == 1) {
             fprintf(fptr, "%d\n", i + 1);
         }
     }
     fclose(fptr);
     fptr = fopen("edges.dat", "w");
     for(i = 0; i < MAX_NUM_OF_NODES; i++) {
-        for(j = i + 1; j < MAX_NUM_OF_NODES; j++) {
+        for(j = i; j < MAX_NUM_OF_NODES; j++) {
             if (adjacencyMatrix[i][j] == 1) {
                 fprintf(fptr, "%d %d\n", i + 1, j + 1);
             }
@@ -575,7 +583,7 @@ void addNode() {
         printf("\nThe node already exists\n");
     }
     else { //If it doesnt exist
-        adjacencyMatrix[node][node] = 1;
+        adjacencyMatrix[node][node] = 2;
         for(i = 0; i < MAX_NUM_OF_NODES - 1; i++) {
             printf("\nProvide name of node to connect to [-1 if no more nodes]: ");
             scanf("%d", &destination);
@@ -585,11 +593,11 @@ void addNode() {
             //If the user provided bad input, decrement i and let them try again
             if(destination >= MAX_NUM_OF_NODES || destination < 0
                || nodeExists(destination) == 0) {
-                printf("\nInvalid node!\n");
+                printf("\nInvalid edge!\n");
                 i--;
             }
             else if (adjacencyMatrix[node][destination] == 1) { //Node already exists
-                printf("\nNode already in graph\n");
+                printf("\nEdge already in graph\n");
                 i--;
             }
             else { //Add the node to the adjacency matrix
@@ -635,8 +643,17 @@ void deleteNode() {
  */
 int nodeExists(int node) {
     int nodeInGraph = 0;
-    if (adjacencyMatrix[node][node] == 1) {
+    if (adjacencyMatrix[node][node] == 1 || adjacencyMatrix[node][node] == 2) {
         nodeInGraph = 1;
     }
     return nodeInGraph;
+}
+
+void printAdjacencyMatrix() {
+    for (int i = 0; i < MAX_NUM_OF_NODES; i++) {
+        for (int j = 0; j < MAX_NUM_OF_NODES; j++) {
+            printf("%d ", adjacencyMatrix[i][j]);
+        }
+        printf("\n");
+    }
 }

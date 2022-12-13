@@ -1,4 +1,4 @@
-C:\Users\user\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\223.7571.171\bin\cmake\win\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=C:/Users/user/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/ninja/win/ninja.exe -G Ninja -S C:\Users\user\CLionProjects\undirected_graph_bfs_gnuplot -B C:\Users\user\CLionProjects\undirected_graph_bfs_gnuplot\cmake-build-debug
+C:\Users\user\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\223.7571.171\bin\cmake\win\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" -S C:\Users\user\Documents\GitHub\undirected_graph_gnuplot\undirected_graph_bfs_gnuplot -B C:\Users\user\Documents\GitHub\undirected_graph_gnuplot\undirected_graph_bfs_gnuplot\cmake-build-debug
 -- The C compiler identification is GNU 11.2.0
 -- Detecting C compiler ABI info
 -- Detecting C compiler ABI info - done
@@ -7,4 +7,4 @@ C:\Users\user\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\223.7571.171\bin\c
 -- Detecting C compile features - done
 -- Configuring done
 -- Generating done
--- Build files have been written to: C:/Users/user/CLionProjects/undirected_graph_bfs_gnuplot/cmake-build-debug
+-- Build files have been written to: C:/Users/user/Documents/GitHub/undirected_graph_gnuplot/undirected_graph_bfs_gnuplot/cmake-build-debug
