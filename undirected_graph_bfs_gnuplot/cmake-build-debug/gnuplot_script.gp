@@ -14,10 +14,11 @@ getIdx(col) = (c0=strstrt(IdIdxs,sprintf(" %s:",strcol(col))), \
 
 set size ratio 1
 set key noautotitle
-set offsets 0.25,0.25,0.25,0.25
+set offsets 1.0,1.0,1.0,1.0
+set style fill transparent solid 0.5 noborder
 
 plot FILE index 1 u (idx0=getIdx(1),x0=Px(idx0)):(y0=Py(idx0)): \
-         (idx1=getIdx(2),Px(idx1)-x0):(Py(idx1)-y0):3 w vec lw 2 lc rgb var nohead, \
-       '' index 0 u 2:3:4 w p pt 7 ps 6 lc rgb var, \
+         (idx1=getIdx(2),Px(idx1)-x0):(Py(idx1)-y0):3 w vec lw 2 lc rgb "pink" nohead, \
+       '' index 0 u 2:3:4 w p pt 7 ps 6 lc rgb 220, \
        '' index 0 u 2:3 w p pt 6 ps 6 lc rgb "black", \
        '' index 0 u 2:3:1 w labels
