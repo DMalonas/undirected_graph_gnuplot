@@ -24,10 +24,11 @@ want to plot the graph. If they choose to insert a new node, the adjacency matri
 are updated. The same is true for the delete node choice. When checking if a node exists, again, we simply check the adjacency matrix.
 When the user picks the plot-graph choice, the plotGraph method is called. There, all the information from vertices.dat and edges.dat
 is extracted and fed into graph.dat. 
-*For vertices, we call a layout method that gets a list of vertices and after generating a random float x, y
-*pair of values, it  uses the pythagorean theorem to check if the hypotenuse distance between the point we are currently processing and all the other points
-*is less than the minimum allowed distance. If it is, we try X more times to get it right, and if we dont, then we use the last x,y pair of values that were
-*randomly assigned. Now we have node labels, and coordinates for each node, and then we also generate a random rgb color - which ultimately does not seem to
-*take effect as the colors are set manually within the gnuplot script. 
-*We also generate a random color for each edge, and then we write all the node and edge data into graph.dat.
-*Then we use a system command to execute the gnuplot script (called gnuplot_script.gp) that reads from graph.dat to plot the graph.
+##
+$For vertices, we call a layout method that gets a list of vertices and after generating a random float x, y
+pair of values, it  uses the pythagorean theorem to check if the hypotenuse distance between the point we are currently processing and all the other points
+is less than the minimum allowed distance. If it is, we try X more times to get it right, and if we dont, then we use the last x,y pair of values that were
+randomly assigned. Now we have node labels, and coordinates for each node, and then we also generate a random rgb color - which ultimately does not seem to
+take effect as the colors are set manually within the gnuplot script. 
+We also generate a random color for each edge, and then we write all the node and edge data into graph.dat.
+Then we use a system command to execute the gnuplot script (called gnuplot_script.gp) that reads from graph.dat to plot the graph.
