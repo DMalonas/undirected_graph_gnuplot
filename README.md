@@ -11,6 +11,7 @@ Link to Github r with all the explanation videos (uploading them all here, makes
 First create a graph by requesting the number of nodes and then edges. This process creates the corresponding adjacency matrix.
 If its not comprised by a single component, which the method isConnected evaluates via the use of the bfs algorithm, then
 request from the user to provide details for a new graph again.
+##
 If the graph is correct, calculate the adjacency lists, using the struct Graph data structure, and return the graph::struct Graph variable,
 so the method responsible for printing the adjacency lists can use it to display them on the terminal.
 Then, process the adjacency matrix to extract nodes info into vertices.dat, and edges info into edges.dat data files.
