@@ -95,9 +95,7 @@ int main() {
             searchNode();
         }
         else if (choice == 'I' || choice == 'i') {
-//            printAdjacencyMatrix();
             addNode();
-//            printAdjacencyMatrix();
             graph = calculateAdjacencyLists();
             printAdjacencyLists(graph);
             extractNodesAndEdgesInfoToDatFile();
@@ -203,7 +201,6 @@ void plotGraph() {
 
     int numOfEdges = getNumOfLines(edgesFile);
     lines = (char **)(malloc((numOfEdges) * sizeof(char *)));
-//    printf("Lines: %d\n", numOfEdges);
     for (int i = 0; i < numOfEdges; i++)
     {
         lines[i] = (char *)malloc(sizeof(char *) * 25);
@@ -290,7 +287,6 @@ struct Graph * calculateAdjacencyLists() {
     struct Graph* graph = (struct Graph*)malloc(sizeof(struct Graph));
     if (graph == NULL) {exit(1);}
     //With adjacent lists
-//    printf("%d <- current num of nodes#\n", currentNumberOfNodes);
     graph->adjLists = (struct node *) malloc(currentNumberOfNodes * sizeof(struct node *));
     if (graph->adjLists == NULL) { exit(1);}
     //and a list for the nodes pointing to their corresponding adjacent list
@@ -300,8 +296,8 @@ struct Graph * calculateAdjacencyLists() {
     if (graph->headPointers == NULL) { exit(1);}
 
     //Create the heads of the lists. The position that describes the node its self
-    //has been set to 1 in the line that represents it, in the adjacency matrix
-    //So if there is a node 5, adjacencyMatrix[4][4] will be 1
+    //has been set to 2 in the row that represents it, in the adjacency matrix
+    //So if there is a node 5, adjacencyMatrix[4][4] will be 2
     //On the other hand, if there is no node 4 then adjacencyMatrix[3][3] will be 0
     //That way we know what value to assign to each of the headPointers
     int countLists = 0;
@@ -313,7 +309,6 @@ struct Graph * calculateAdjacencyLists() {
         }
     }
     graph->numOfNodes = countLists;
-//    printf("%d <- graph->numOfNodess#\n", graph->numOfNodes);
 
     // Populate Lists by adding nodes in the beggining of the corresponding adjacency list
     for(int i = 0; i < countLists; i++) {
@@ -379,6 +374,13 @@ struct node* createNode(int label) {
  * 3: 0 1 0 1 0
  * 4: 0 1 0 0 1
  * 5: 1 2 0 1 0
+ * To avoid having a separate structure for identifying existing nodes
+ * (a node could have 0s end to end in its row if it has no edge so
+ *  checking for at least one 1, in a row, is not necessarily going to
+ *  identify the existence of a node), set the diagonal index to 2 when
+ *  the node exists. That index can also be used to represent an edge
+ *  with origin and destination the node itself. In this case, just
+ *  set it to 1.
  */
 void createAdjacencyMatrix() {
     int i, j, maxEdges, origin, destination;
@@ -395,8 +397,6 @@ void createAdjacencyMatrix() {
             }
         }
     }
-
-//    printf("max - > edges -> %d \n", maxEdges);
 
     for(i = 0; i < maxEdges; i++) {
         printf("\nEnter edge %d [Quit: -1 -1]: ", i);
@@ -583,7 +583,7 @@ void addNode() {
         printf("\nThe node already exists\n");
     }
     else { //If it doesnt exist
-        adjacencyMatrix[node][node] = 2;
+        adjacencyMatrix[node][node] = 2; //Add node to the adjacency matrix
         for(i = 0; i < MAX_NUM_OF_NODES - 1; i++) {
             printf("\nProvide name of node to connect to [-1 if no more nodes]: ");
             scanf("%d", &destination);
@@ -596,11 +596,11 @@ void addNode() {
                 printf("\nInvalid edge!\n");
                 i--;
             }
-            else if (adjacencyMatrix[node][destination] == 1) { //Node already exists
+            else if (adjacencyMatrix[node][destination] == 1) { //Edge already exists
                 printf("\nEdge already in graph\n");
                 i--;
             }
-            else { //Add the node to the adjacency matrix
+            else { //Add the edge to the adjacency matrix
                 adjacencyMatrix[node][destination] = 1;
                 adjacencyMatrix[destination][node] = 1;
             }
@@ -635,7 +635,7 @@ void deleteNode() {
  * Check if the node exists
  * By convention implemented in the program code
  * a node exists if
- * adjacencyMatrix[node][node] == 1
+ * adjacencyMatrix[node][node] == 2, or 1
  * The createAdjacencyMatrix() method implements
  * this setup
  * @param ::int node the node label
