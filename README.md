@@ -18,7 +18,7 @@ If the graph is correct, calculate the adjacency lists, using the struct Graph d
 so the method responsible for printing the adjacency lists can use it to display them on the terminal.
 ##
 Then, process the adjacency matrix to extract nodes info into vertices.dat, and edges info into edges.dat data files.
-These file will later be used by the plotGraph method to put together a final graph.dat file which contains the necessary 
+These files will later be used by the plotGraph method to put together a final graph.dat file which contains the necessary 
 ininformation and in the appropriate format, for the gnuplot script to read and draw the graph.
 ##
 Then, enter the main user menu, and ask the user to choose if they want to insert, or delete a node or search for one. Or if they
