@@ -148,6 +148,7 @@ int getNumOfLines(FILE *fp) {
  *
  * Finally write all information to file, and use the system command "system("gnuplot -p  < gnuplot_script.gp")"
  * to execute the gnuplot script
+ * https://stackoverflow.com/questions/20406346/how-to-plot-tree-graph-web-data-on-gnuplot
  */
 void plotGraph() {
     FILE *edgesFile, *nodesFile, *formattedDataFile;
