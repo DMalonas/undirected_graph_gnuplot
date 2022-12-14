@@ -3,7 +3,9 @@
 Create an undirected graph, check if it is connected (not more than one components), calculate the adjacency matrix and lists, and then use the available data to plot it using gnuplot.
 
 
-Link to Github with all the explanation videos (uploading them all here, makes downloading the project slow): https://github.com/DMalonas/undirected_graph_gnuplot_videos
+Link to Github r (to which you are a collaborator so you have access) with 
+all the explanation videos (uploading them all here, makes
+downloading the project slow): https://github.com/DMalonas/undirected_graph_gnuplot_videos
 
 
 
